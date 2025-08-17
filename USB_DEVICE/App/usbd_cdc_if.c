@@ -152,7 +152,7 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
-  extern uint8_t rx_buff[2][100];
+  extern uint8_t rx_buff[2][APP_RX_DATA_SIZE];
   extern uint8_t curr_buffer_id;
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
@@ -265,7 +265,7 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   /* USER CODE BEGIN 6 */
 
   extern uint16_t recv_len;
-  extern uint8_t rx_buff[2][100];
+  extern uint8_t rx_buff[2][APP_RX_DATA_SIZE];
   extern uint8_t received_packet;
   extern uint8_t curr_buffer_id;
 

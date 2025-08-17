@@ -104,7 +104,7 @@ int main(void)
 	{
 		uint8_t received_buff_id = (curr_buffer_id + 1) % 2;
 
-		uint8_t len = strnlen((char*)(rx_buff[received_buff_id]), sizeof(rx_buff[0]));
+		uint8_t len = strnlen((char*)(rx_buff[received_buff_id]), sizeof(rx_buff[received_buff_id]));
 
 		CDC_Transmit_FS(rx_buff[received_buff_id], len);
 
