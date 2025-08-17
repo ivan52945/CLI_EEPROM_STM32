@@ -24,4 +24,5 @@ Command examples:
 | 4 | Erase cell        | eeprom -w -a 10 -v 55 |
 | 5 | Write cell        | eeprom -w -a 10 -v 55 |
 | 6 | Dump to console   | eeprom -w -a 10 -v 55 |
+  
 *The dump is output in Intel HEX format
