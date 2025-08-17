@@ -20,6 +20,7 @@ void execute_command(char command[], char message[])
 	char* argv[MAX_ARGS_N] = {};
 	uint8_t wrong_cmd = 1;
 
+	uint8_t len = sprintf(message, "%s\n", command);
 	argv[argc++] = strtok(command, " ");
 
 	char* prefix = argv[0];
@@ -33,9 +34,9 @@ void execute_command(char command[], char message[])
 
 		for(;(argv[argc] = strtok(NULL, " ")) != NULL && argc < MAX_ARGS_N; argc++) {}
 
-		command_table[i].command(argc, argv, message);
+		command_table[i].command(argc, argv, message + len);
 	}
 
 	if(wrong_cmd)
-		sprintf(message, "Error: unrecognized command");
+		sprintf(message + len, "Error: unrecognized command\n");
 }

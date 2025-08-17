@@ -94,7 +94,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  char message[100] = "";
+  char message[400] = "";
   /* USER CODE END 2 */
 
   /* Infinite loop */

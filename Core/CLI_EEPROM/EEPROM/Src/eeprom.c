@@ -40,7 +40,6 @@ uint8_t read(uint16_t addr, uint8_t *tgt)
 
 void eeprom_execute_cmd(uint8_t argc, char* argv[], char message[])
 {
-	uint8_t end_msg = sprintf(message, "Execute eeprom cmd, args");
 	int arg = 0;
 
 	uint8_t err_flag = 0;
@@ -83,5 +82,46 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[], char message[])
             	break;
 		}
 	}
-	err_flag += 1;
+
+	optind = 1;
+
+	if(err_flag)
+	{
+		sprintf(message,"Error: unrecognized arg or value\n");
+		return;
+	}
+	if((write_flag + read_flag + clear_flag + dump_flag) == 0)
+	{
+		sprintf(message,"Error: command expected\n");
+		return;
+	}
+	if((write_flag + read_flag + clear_flag + dump_flag) > 1)
+	{
+		sprintf(message,"Error: allowed to use only one command flag\n");
+		return;
+	}
+	if(write_flag && (!addr_flag || !value_flag))
+	{
+		sprintf(message,"Error: write command expect address and value\n");
+		return;
+	}
+	if(read_flag && (!addr_flag || value_flag))
+	{
+		sprintf(message,"Error: read command expect address and don't expect value\n");
+		return;
+	}
+
+	if(read_flag)
+	{
+		uint8_t eeprom_value = 0;
+		uint8_t eeprom_status = read(address, &eeprom_value);
+		sprintf(message,"Address: %u; value: %u\n", address, eeprom_value);
+		return;
+	}
+	if(write_flag)
+	{
+		uint8_t eeprom_status = write(address, value);
+		sprintf(message,"Write address: %u; value: %u\n", address, value);
+		return;
+	}
 }
