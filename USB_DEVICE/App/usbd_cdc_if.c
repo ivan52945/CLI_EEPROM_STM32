@@ -269,7 +269,7 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   extern uint8_t received_packet;
   extern uint8_t curr_buffer_id;
 
-  uint16_t len = (*Len <= 99) ? *Len : 99;
+  uint16_t len = (*Len <= 99) ? (*Len) - 1 : 99;
 
   recv_len = len;
   rx_buff[curr_buffer_id][len] = 0;

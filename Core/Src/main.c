@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "cli.h"
 #include "usbd_cdc_if.h"
 #include "string.h"
 /* USER CODE END Includes */
@@ -93,7 +94,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  char message[100] = "";
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,9 +105,12 @@ int main(void)
 	{
 		uint8_t received_buff_id = (curr_buffer_id + 1) % 2;
 
-		uint8_t len = strnlen((char*)(rx_buff[received_buff_id]), sizeof(rx_buff[received_buff_id]));
+		char* command = (char*)rx_buff[received_buff_id];
 
-		CDC_Transmit_FS(rx_buff[received_buff_id], len);
+
+		execute_command(command, message);
+		uint8_t len = strnlen(message, sizeof(message));
+		CDC_Transmit_FS((uint8_t*)message, len);
 
 		received_packet = 0;
 	}

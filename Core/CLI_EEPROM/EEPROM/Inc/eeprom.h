@@ -19,4 +19,6 @@ uint8_t write(uint16_t addr, uint8_t value);
 
 uint8_t read(uint16_t addr, uint8_t *tgt);
 
+void eeprom_execute_cmd(uint8_t argc, char* argv[], char message[]);
+
 #endif /* EEPROM_H_ */
