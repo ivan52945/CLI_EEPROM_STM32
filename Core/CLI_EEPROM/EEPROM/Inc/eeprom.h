@@ -10,6 +10,10 @@
 
 #include <stdint.h>
 
+#define EEPROM_SIZE (64)
+#define EEPROM_START_ADDR (0)
+#define EEPROM_END_ADDR (EEPROM_START_ADDR + EEPROM_SIZE - 1)
+
 typedef enum {
 	EEPROM_OK = 0,
 	EEPROM_OUT_OF_RANGE,
@@ -19,6 +23,8 @@ uint8_t write(uint16_t addr, uint8_t value);
 
 uint8_t read(uint16_t addr, uint8_t *tgt);
 
-void eeprom_execute_cmd(uint8_t argc, char* argv[], char message[]);
+uint8_t erase(uint16_t addr);
+
+void eeprom_dump_out(void);
 
 #endif /* EEPROM_H_ */

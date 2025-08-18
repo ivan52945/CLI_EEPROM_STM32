@@ -8,6 +8,8 @@
 #ifndef CLI_EEPROM_CLI_INC_CLI_H_
 #define CLI_EEPROM_CLI_INC_CLI_H_
 
-void execute_command(char command[], char message[]);
+#include <stdint.h>
+
+void execute_command(char command[], uint16_t len);
 
 #endif /* CLI_EEPROM_CLI_INC_CLI_H_ */

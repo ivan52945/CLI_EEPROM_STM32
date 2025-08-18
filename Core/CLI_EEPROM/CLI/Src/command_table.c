@@ -5,14 +5,13 @@
  *      Author: Nemicus
  */
 
-#include "eeprom.h"
+#include "eeprom_cli.h"
 #include "command_table.h"
 
 const command_table_t command_table[] = {
 	{
 		.command_prefix = "eeprom",
 		.command = eeprom_execute_cmd,
-		.description = "This command get access to EEPROM",
 	},
 };
 

@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "cli.h"
 #include "usbd_cdc_if.h"
+#include "utils.h"
 #include "string.h"
 /* USER CODE END Includes */
 
@@ -46,10 +47,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t curr_buffer_id = 0;
-uint8_t rx_buff[2][APP_RX_DATA_SIZE] = {0};
-uint16_t recv_len = 0;
-uint8_t received_packet = {0};
+uint8_t received_packet = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,7 +92,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  char message[400] = "";
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,14 +101,14 @@ int main(void)
   {
 	if(received_packet)
 	{
-		uint8_t received_buff_id = (curr_buffer_id + 1) % 2;
+		char* command = get_filled_rx_buff_ptr();
+		uint16_t len = get_received_length();
 
-		char* command = (char*)rx_buff[received_buff_id];
+		execute_command(command, len);
+		//CDC_Transmit_FS((uint8_t*)message, len);
 
-
-		execute_command(command, message);
-		uint8_t len = strnlen(message, sizeof(message));
-		CDC_Transmit_FS((uint8_t*)message, len);
+		//uint16_t len_cmd = get_received_length();
+		//CDC_Transmit_FS((uint8_t*)command, len_cmd);
 
 		received_packet = 0;
 	}

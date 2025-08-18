@@ -1,0 +1,4 @@
+../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:14:9:write	2
+../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:25:9:read	2
+../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:36:9:erase	2
+../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:47:6:eeprom_dump_out	2

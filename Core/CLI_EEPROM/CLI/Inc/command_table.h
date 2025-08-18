@@ -10,12 +10,11 @@
 
 #include <stdint.h>
 
-typedef void (*cmd_cb_t)(uint8_t, char**, char*);
+typedef void (*cmd_cb_t)(uint8_t, char**);
 
 typedef struct {
 	char command_prefix[10];
 	cmd_cb_t command;
-	char description[100];
 } command_table_t;
 
 extern const command_table_t command_table[];
