@@ -137,14 +137,40 @@ int strcmp_custom(const char* s1, const char* s2)
 	}
 	return (*s1 - *s2);
 }
+// BAD IDEA
+char* strchr_custom(char* str, int chr)
+{
+	char* ptr = str;
 
-//arg = getopt(argc, argv, "wreda:v:")
+	while(*ptr && *ptr != chr) { ++ptr; }
+
+	return (*ptr == chr) ? ptr : 0;
+}
+
+int strtol_custom(char* start, uint8_t *status, uint8_t base)
+{
+	char* end = NULL;
+
+	uint8_t len = strlen(optarg_custom);
+	int value = strtol(optarg_custom, &end, base);
+
+	if(status != 0)
+	{
+		if((end - start) < len)
+			*status = 1;
+		else
+			*status = 0;
+	}
+
+	return value;
+}
+
 char * optarg_custom = 0;
 int optind_custom = 1;
 
 int getopt_custom(int argc, char** argv, char commands[])
 {
-	if(optind_custom == argc)
+	if(optind_custom >= argc)
 		return -1;
 
 	//TODO: refactor it

@@ -34,6 +34,8 @@ char* strtok_custom_spaces(char* src);
 
 int strcmp_custom(const char* s1, const char* s2);
 
+int strtol_custom(char* start, uint8_t *status, uint8_t base);
+
 extern char* optarg_custom;
 extern int optind_custom;
 int getopt_custom(int argc, char** argv, char commands[]);

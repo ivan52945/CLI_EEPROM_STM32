@@ -25,6 +25,4 @@ uint8_t read(uint16_t addr, uint8_t *tgt);
 
 uint8_t erase(uint16_t addr);
 
-void eeprom_dump_out(void);
-
 #endif /* EEPROM_H_ */

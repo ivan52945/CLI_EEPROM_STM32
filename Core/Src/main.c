@@ -105,7 +105,6 @@ int main(void)
 		uint16_t len = get_received_length();
 
 		execute_command(command, len);
-		//CDC_Transmit_FS((uint8_t*)message, len);
 
 		//uint16_t len_cmd = get_received_length();
 		//CDC_Transmit_FS((uint8_t*)command, len_cmd);

@@ -39,22 +39,7 @@ uint8_t erase(uint16_t addr)
 	if(addr < EEPROM_START_ADDR || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
 		return EEPROM_OUT_OF_RANGE;
 
-	EEPROM[addr - EEPROM_START_ADDR] = 0;
+	EEPROM[addr - EEPROM_START_ADDR] = 0xFF;
 
 	return EEPROM_OK;
-}
-
-void eeprom_dump_out(void)
-{
-	char message[80] = {0};
-
-	for(int i = 0; i < EEPROM_SIZE; i += 16)
-	{
-		uint16_t addr = EEPROM_START_ADDR + i;
-		uint8_t len = ((i + 16) < EEPROM_SIZE) ? 16 : EEPROM_SIZE - i;
-
-		uint16_t str_len = make_hex_string(message, addr, EEPROM + i, len);
-
-		message_out(message, str_len);
-	}
 }
