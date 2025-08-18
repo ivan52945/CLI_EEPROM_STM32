@@ -127,3 +127,47 @@ char* strtok_custom_spaces(char* src)
 	else
 		return 0;
 }
+// BAD IDEA
+int strcmp_custom(const char* s1, const char* s2)
+{
+	while ( *s1 && *s1 == *s2 )
+	{
+		++s1;
+		++s2;
+	}
+	return (*s1 - *s2);
+}
+
+//arg = getopt(argc, argv, "wreda:v:")
+char * optarg_custom = 0;
+int optind_custom = 1;
+
+int getopt_custom(int argc, char** argv, char commands[])
+{
+	if(optind_custom == argc)
+		return -1;
+
+	//TODO: refactor it
+	if(argv[optind_custom][0] == '-')
+	{
+		char* arg = strchr(commands, argv[optind_custom][1]);
+
+		if(arg != 0)
+		{
+			if (arg[1] != ':')
+			{
+				++optind_custom;
+				return *arg;
+			}
+			if (arg[1] && (optind_custom < (argc - 1)) && argv[optind_custom + 1][0] != '-')
+			{
+				++optind_custom;
+				optarg_custom = &(argv[optind_custom][0]);
+				++optind_custom;
+				return *arg;
+			}
+		}
+	}
+	++optind_custom;
+	return '?';
+}

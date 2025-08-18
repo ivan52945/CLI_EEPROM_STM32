@@ -23,9 +23,9 @@ void execute_command(char command[], uint16_t len)
 
 	message_out(command, len);
 
-	//argv[argc++] = strtok_custom_spaces(command);
+	argv[argc++] = strtok_custom_spaces(command);
 
-	argv[argc++] = strtok(command, " ");
+	//argv[argc++] = strtok(command, " ");
 
 	command[len-1] = 0;
 
@@ -39,9 +39,9 @@ void execute_command(char command[], uint16_t len)
 
 		wrong_cmd = 0;
 
-		//for(;(argv[argc] = strtok_custom_spaces(0)) != NULL && argc < MAX_ARGS_N; ++argc) {}
+		for(;(argv[argc] = strtok_custom_spaces(0)) != 0 && argc < MAX_ARGS_N; ++argc) {}
 
-		for(;(argv[argc] = strtok(0, " ")) != NULL && argc < MAX_ARGS_N; ++argc) {}
+		//for(;(argv[argc] = strtok(0, " ")) != NULL && argc < MAX_ARGS_N; ++argc) {}
 
 		command_table[i].command(argc, argv);
 

@@ -33,7 +33,7 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 	uint8_t address_readed = 1;
 	uint8_t value_readed = 1;
 
-	while((arg = getopt(argc, argv, "wreda:v:")) != -1)
+	while((arg = getopt_custom(argc, argv, "wreda:v:")) != -1)
 	{
 		switch(arg)
 		{
@@ -50,14 +50,11 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 				break;
 			case 'a':
 				addr_flag = 1;
-				if(*optarg != '-')
-					address = strtol(optarg, NULL, 10);
-				else
+				address = strtol(optarg_custom, NULL, 10);
 				break;
 			case 'v':
 				value_flag = 1;
-				if(*optarg != '-')
-					value = strtol(optarg, NULL, 10);
+				value = strtol(optarg_custom, NULL, 10);
 				break;
             case '?':
             default:
@@ -66,7 +63,7 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 		}
 	}
 
-	optind = 1;
+	optind_custom = 1;
 
 	char message[100] = "";
 

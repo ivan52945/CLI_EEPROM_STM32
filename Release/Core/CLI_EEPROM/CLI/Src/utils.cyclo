@@ -1,9 +1,0 @@
-../Core/CLI_EEPROM/CLI/Src/utils.c:57:21:place_byte_to_str	3
-../Core/CLI_EEPROM/CLI/Src/utils.c:19:7:set_next_rx_buff_ptr	1
-../Core/CLI_EEPROM/CLI/Src/utils.c:25:7:get_curr_rx_buf_ptr	1
-../Core/CLI_EEPROM/CLI/Src/utils.c:30:7:get_filled_rx_buff_ptr	1
-../Core/CLI_EEPROM/CLI/Src/utils.c:36:6:set_received_length	1
-../Core/CLI_EEPROM/CLI/Src/utils.c:45:10:get_received_length	1
-../Core/CLI_EEPROM/CLI/Src/utils.c:50:6:message_out	2
-../Core/CLI_EEPROM/CLI/Src/utils.c:79:10:make_hex_string	2
-../Core/CLI_EEPROM/CLI/Src/utils.c:108:7:strtok_custom_spaces	6

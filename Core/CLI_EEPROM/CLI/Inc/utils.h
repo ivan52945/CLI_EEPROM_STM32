@@ -32,4 +32,10 @@ void message_out(char message[], uint16_t len);
 
 char* strtok_custom_spaces(char* src);
 
+int strcmp_custom(const char* s1, const char* s2);
+
+extern char* optarg_custom;
+extern int optind_custom;
+int getopt_custom(int argc, char** argv, char commands[]);
+
 #endif /* CLI_EEPROM_CLI_INC_UTILS_H_ */

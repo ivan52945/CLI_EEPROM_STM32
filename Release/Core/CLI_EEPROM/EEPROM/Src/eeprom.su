@@ -1,4 +1,0 @@
-../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:14:9:write	0	static
-../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:25:9:read	0	static
-../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:36:9:erase	0	static
-../Core/CLI_EEPROM/EEPROM/Src/eeprom.c:47:6:eeprom_dump_out	96	static
