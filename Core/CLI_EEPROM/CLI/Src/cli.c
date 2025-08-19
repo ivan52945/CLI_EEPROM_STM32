@@ -6,10 +6,11 @@
  */
 
 #include "cli.h"
-#include "utils.h"
+#include "buffer.h"
 #include "command_table.h"
 #include <string.h>
 #include <stdint.h>
+#include <str_custom.h>
 
 #define MAX_ARGS_N 10
 

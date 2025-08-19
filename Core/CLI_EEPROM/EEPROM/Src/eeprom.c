@@ -7,6 +7,7 @@
 
 #include "eeprom.h"
 #include <stdint.h>
+#include <assert.h>
 #include "utils.h"
 
 static uint8_t EEPROM[EEPROM_SIZE] = {8, 4, 2, 10, 7};
@@ -14,8 +15,10 @@ static uint8_t EEPROM[EEPROM_SIZE] = {8, 4, 2, 10, 7};
 uint8_t write(uint16_t addr, uint8_t src)
 {
 	// TODO: make asserts
-	if(addr < EEPROM_START_ADDR || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
+	if((addr < EEPROM_START_ADDR) || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
 		return EEPROM_OUT_OF_RANGE;
+
+	assert((addr >= EEPROM_START_ADDR) || addr <= (EEPROM_START_ADDR + EEPROM_SIZE - 1));
 
 	EEPROM[addr - EEPROM_START_ADDR] = src;
 
@@ -25,8 +28,10 @@ uint8_t write(uint16_t addr, uint8_t src)
 uint8_t read(uint16_t addr, uint8_t *tgt)
 {
 	// TODO: make asserts
-	if(addr < EEPROM_START_ADDR || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
+	if((addr < EEPROM_START_ADDR) || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
 		return EEPROM_OUT_OF_RANGE;
+
+	assert((addr >= EEPROM_START_ADDR) || addr <= (EEPROM_START_ADDR + EEPROM_SIZE - 1));
 
 	*tgt = EEPROM[addr - EEPROM_START_ADDR];
 
@@ -36,8 +41,10 @@ uint8_t read(uint16_t addr, uint8_t *tgt)
 uint8_t erase(uint16_t addr)
 {
 	// TODO: make asserts
-	if(addr < EEPROM_START_ADDR || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
+	if((addr < EEPROM_START_ADDR) || addr > (EEPROM_START_ADDR + EEPROM_SIZE - 1))
 		return EEPROM_OUT_OF_RANGE;
+
+	assert((addr >= EEPROM_START_ADDR) || addr <= (EEPROM_START_ADDR + EEPROM_SIZE - 1));
 
 	EEPROM[addr - EEPROM_START_ADDR] = 0xFF;
 

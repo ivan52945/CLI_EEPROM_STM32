@@ -25,7 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "cli.h"
 #include "usbd_cdc_if.h"
-#include "utils.h"
+#include "buffer.h"
 #include "string.h"
 /* USER CODE END Includes */
 

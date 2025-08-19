@@ -5,11 +5,13 @@
  *      Author: Nemicus
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "buffer.h"
+#include "getopt_custom.h"
+#include "str_custom.h"
 #include "eeprom.h"
 #include "eeprom_cli.h"
-#include "utils.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 typedef enum {
 	NO_COMMANDS = 0,
@@ -26,6 +28,7 @@ typedef enum {
 	VALUE_FLAG = (1 << 1),
 } argument_flag_t;
 
+
 void eeprom_execute_cmd(uint8_t argc, char* argv[])
 {
 	int arg = 0;
@@ -37,6 +40,7 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 	unsigned int value = 0;
 
 	uint8_t read_arg_status = 0;
+	uint8_t get_args_status = 0;
 
 	while((arg = getopt_custom(argc, argv, "wreda:v:")) != -1)
 	{
@@ -55,11 +59,17 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 				break;
 			case 'a':
 				value_flags |= ADDR_FLAG;
-				address = strtol_custom(optarg_custom, &read_arg_status, 10);
+				if(!optarg_stat_custom)
+					address = atoi10_custom(optarg_custom, &read_arg_status);
+				if(optarg_stat_custom || read_arg_status)
+					get_args_status |= ADDR_FLAG;
 				break;
 			case 'v':
 				value_flags |= VALUE_FLAG;
-				value = strtol_custom(optarg_custom, &read_arg_status, 10);
+				if(!optarg_stat_custom)
+					value = atoi10_custom(optarg_custom, &read_arg_status);
+				if(optarg_stat_custom || read_arg_status)
+					get_args_status |= VALUE_FLAG;
 				break;
             case '?':
             default:
@@ -70,27 +80,63 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 
 	optind_custom = 1;
 
-	if(read_arg_status)
+
+	switch(get_args_status)
 	{
-		__msg_out("Error: unrecognized parameter\n");
-		return;
+		case ADDR_FLAG:
+			__msg_out("Error: unrecognised or missing address\n");
+			return;
+		case VALUE_FLAG:
+			__msg_out("Error: unrecognised or missing value\n");
+			return;
+		case ADDR_FLAG | VALUE_FLAG:
+			__msg_out("Error: unrecognised or missing addr and value\n");
+			return;
+		default:
 	}
 
 	char message[100] = "";
+
+	if(!comand_flags)
+	{
+		__msg_out("Error: command expected\n");
+		return;
+	}
+	if(comand_flags & (comand_flags - 1))
+	{
+		__msg_out("Error: allowed to use only one command flag\n");
+		return;
+	}
+	if((comand_flags == READ_FLAG) && (value_flags != ADDR_FLAG))
+	{
+		__msg_out("Error: read command expect address and don't expect value\n");
+		return;
+	}
+	else if((comand_flags == WRITE_FLAG) && (value_flags != (VALUE_FLAG | ADDR_FLAG)))
+	{
+		__msg_out("Error: write command expect address and value\n");
+		return;
+	}
+	else if((comand_flags == ERACE_FLAG) && (value_flags != ADDR_FLAG))
+	{
+		__msg_out("Error: erace command expect address and don't expect value\n");
+		return;
+	}
+	else if((comand_flags == DUMP_FLAG) && (value_flags != NO_VALUES))
+	{
+		__msg_out("Error: Dump command don't expect value or address\n");
+		return;
+	}
 
 	switch(comand_flags)
 	{
 		case READ_FLAG:
 		{
-			if(value_flags != ADDR_FLAG)
-			{
-				__msg_out("Error: read command expect address and don't expect value\n");
-				return;
-			}
 
 			uint8_t eeprom_value = 0;
 			uint8_t len = sprintf(message,"Read cell. Address: %u\n", address);
 			uint8_t eeprom_status = read(address, &eeprom_value);
+
 			if(eeprom_status == EEPROM_OK)
 				len += sprintf(message + len,"Value: %u\n", eeprom_value);
 			else if(eeprom_status == EEPROM_OUT_OF_RANGE)
@@ -103,14 +149,9 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 		}
 		case WRITE_FLAG:
 		{
-			if(value_flags != (VALUE_FLAG | ADDR_FLAG))
-			{
-				__msg_out("Error: write command expect address and value\n");
-				return;
-			}
-
 			uint8_t len = sprintf(message, "Write cell. Address: %u; value: %u\n", address, value);
 			uint8_t eeprom_status = write(address, value);
+
 			if(eeprom_status == EEPROM_OK)
 				len += sprintf(message + len, "Changed\n");
 			else if(eeprom_status == EEPROM_OUT_OF_RANGE)
@@ -123,14 +164,9 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 		}
 		case ERACE_FLAG:
 		{
-			if(value_flags != ADDR_FLAG)
-			{
-				__msg_out("Error: erace command expect address and don't expect value\n");
-				return;
-			}
-
 			uint8_t len = sprintf(message, "Erace cell. Address: %u\n", address);
 			uint8_t eeprom_status = erase(address);
+
 			if(eeprom_status == EEPROM_OK)
 				len += sprintf(message + len, "Erased\n");
 			else if(eeprom_status == EEPROM_OUT_OF_RANGE)
@@ -142,21 +178,10 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 			return;
 		}
 		case DUMP_FLAG:
-			if(value_flags != NO_VALUES)
-			{
-				__msg_out("Error: Dump command don't expect value or address\n");
-				return;
-			}
 			eeprom_dump_out();
 			return;
-		case ERR_FLAG:
-			__msg_out("Error: allowed to use only one command flag\n");
-			return;
-		case NO_COMMANDS:
-			__msg_out("Error: command expected\n");
-			return;
 		default:
-			__msg_out("Error: unrecognised command or missing parameter\n");
+			__msg_out("Error: something wrong\n");
 			return;
 	}
 }
@@ -164,11 +189,11 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 void eeprom_dump_out(void)
 {
 	char message[80] = {0};
-	uint8_t data[16] = {0};
-	for(int i = 0; i < EEPROM_SIZE; i += 16)
+	uint8_t data[8] = {0};
+	for(int i = 0; i < EEPROM_SIZE; i += 8)
 	{
 		uint16_t addr = EEPROM_START_ADDR + i;
-		uint8_t len = ((i + 16) < EEPROM_SIZE) ? 16 : EEPROM_SIZE - i;
+		uint8_t len = ((i + 8) < EEPROM_SIZE) ? 8 : EEPROM_SIZE - i;
 
 		for(int j = 0; j < 16; ++j)
 			read(addr + j, &(data[j]));
