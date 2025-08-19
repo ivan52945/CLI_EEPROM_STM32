@@ -22,7 +22,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-
+#include "buffer.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -152,11 +152,10 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
-  extern uint8_t rx_buff[2][100];
-  extern uint8_t curr_buffer_id;
+  uint8_t* ready_rx = (uint8_t*)(set_next_rx_buff_ptr());
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, rx_buff[curr_buffer_id]);
+  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, ready_rx);
   return (USBD_OK);
   /* USER CODE END 3 */
 }
@@ -263,18 +262,12 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-
-  extern uint16_t recv_len;
-  extern uint8_t rx_buff[2][100];
   extern uint8_t received_packet;
-  extern uint8_t curr_buffer_id;
 
-  uint16_t len = (*Len <= 99) ? *Len : 99;
+  set_received_length(*Len);
 
-  recv_len = len;
-  rx_buff[curr_buffer_id][len] = 0;
-  curr_buffer_id = (curr_buffer_id + 1) % 2;
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &(rx_buff[curr_buffer_id][0]));
+  uint8_t* ready = (uint8_t*)(set_next_rx_buff_ptr());
+  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, ready);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
   received_packet = 1;
