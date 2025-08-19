@@ -19,9 +19,9 @@ typedef enum {
 	EEPROM_OUT_OF_RANGE,
 } eeprom_codes_t;
 
-uint8_t write(uint16_t addr, uint8_t value);
+uint8_t write(uint16_t addr, int8_t value);
 
-uint8_t read(uint16_t addr, uint8_t *tgt);
+uint8_t read(uint16_t addr, int8_t *tgt);
 
 uint8_t erase(uint16_t addr);
 

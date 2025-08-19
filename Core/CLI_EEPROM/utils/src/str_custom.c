@@ -106,6 +106,13 @@ int strtol_custom(char* start, char **end, uint8_t base)
 {
 	int result = 0;
 	uint8_t digit = 0;
+	uint8_t minus = 0;
+
+	if(*start == '-')
+	{
+		++start;
+		minus = 1;
+	}
 
 	while(*start)
 	{
@@ -138,13 +145,21 @@ int strtol_custom(char* start, char **end, uint8_t base)
 			return 0;
 		}
 	}
-	return result;
+
+	return (minus) ? result : -result;
 }
 
 int strtol10_custom(char* start, char **end)
 {
 	int result = 0;
 	uint8_t digit = 0;
+	uint8_t minus = 0;
+
+	if(*start == '-')
+	{
+		++start;
+		minus = 1;
+	}
 
 	while(*start)
 	{
@@ -161,7 +176,7 @@ int strtol10_custom(char* start, char **end)
 			return 0;
 		}
 	}
-	return result;
+	return (minus) ? result : -result;
 }
 
 int atoi_custom(char* start, uint8_t *status, uint8_t base)
@@ -185,6 +200,13 @@ int atoi_custom(char* start, uint8_t *status, uint8_t base)
 	*/
 	int result = 0;
 	uint8_t digit = 0;
+	uint8_t minus = 0;
+
+	if(*start == '-')
+	{
+		++start;
+		minus = 1;
+	}
 
 	while(*start)
 	{
@@ -217,7 +239,7 @@ int atoi_custom(char* start, uint8_t *status, uint8_t base)
 		}
 	}
 	*status = 0;
-	return result;
+	return (minus) ? result : -result;
 }
 
 int atoi10_custom(char* start, uint8_t *status)
@@ -241,6 +263,13 @@ int atoi10_custom(char* start, uint8_t *status)
 	*/
 	int result = 0;
 	uint8_t digit = 0;
+	uint8_t minus = 0;
+
+	if(*start == '-')
+	{
+		++start;
+		minus = 1;
+	}
 
 	while(*start)
 	{
@@ -257,7 +286,7 @@ int atoi10_custom(char* start, uint8_t *status)
 		}
 	}
 	*status = 0;
-	return result;
+	return (minus) ? -result : result;
 }
 /*
 int sprintf_custom(char dst[], char *format, ...)

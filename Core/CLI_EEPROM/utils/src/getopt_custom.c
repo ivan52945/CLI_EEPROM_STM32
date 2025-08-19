@@ -34,12 +34,14 @@ int getopt_custom(int argc, char** argv, char commands[])
 
 	// Check arg
 	if (arg[1] == ':')
-
 	{
-		if((optind_custom < (argc - 1)) && (argv[optind_custom + 1][0] != '-'))
+		const uint8_t next = optind_custom + 1;
+
+		//(argv[next][0] != '-') || (argv[next][0] == '-' && argv[next][1] == '-') (lazy calc) => (argv[next][0] != '-') || (argv[next][1] == '-')
+		if((next < argc) && ((argv[next][0] != '-') || (argv[next][1] == '-')))
 		{
 			++optind_custom;
-			optarg_custom = &(argv[optind_custom][0]);
+			optarg_custom = (argv[next][0] != '-') ? &(argv[next][0]) : &(argv[next][1]);
 			optarg_stat_custom = 0;
 		}
 		else

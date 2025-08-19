@@ -33,8 +33,8 @@ typedef struct
 	uint8_t command_flags;
 	uint8_t value_flags;
 	uint8_t value_err_flags;
-	unsigned int address;
-	unsigned int value;
+	int address;
+	int value;
 } command_status_t;
 
 static void eeprom_parse_cmd(uint8_t argc, char* argv[], command_status_t* command);
@@ -57,12 +57,12 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 		case READ_FLAG:
 		{
 
-			uint8_t eeprom_value = 0;
-			uint8_t len = sprintf(message,"Read cell. Address: %u\n", command.address);
+			int8_t eeprom_value = 0;
+			uint8_t len = sprintf(message,"Read cell. Address: %d\n", command.address);
 			uint8_t eeprom_status = read(command.address, &eeprom_value);
 
 			if(eeprom_status == EEPROM_OK)
-				len += sprintf(message + len,"Value: %u\n", eeprom_value);
+				len += sprintf(message + len,"Value: %d\n", eeprom_value);
 			else
 				len += sprintf(message + len, "Something wrong\n");
 
@@ -71,7 +71,7 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 		}
 		case WRITE_FLAG:
 		{
-			uint8_t len = sprintf(message, "Write cell. Address: %u; value: %u\n", command.address, command.value);
+			uint8_t len = sprintf(message, "Write cell. Address: %d; value: %d\n", command.address, command.value);
 			uint8_t eeprom_status = write(command.address, command.value);
 
 			if(eeprom_status == EEPROM_OK)
@@ -84,7 +84,7 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 		}
 		case ERACE_FLAG:
 		{
-			uint8_t len = sprintf(message, "Erace cell. Address: %u\n", command.address);
+			uint8_t len = sprintf(message, "Erace cell. Address: %d\n", command.address);
 			uint8_t eeprom_status = erase(command.address);
 
 			if(eeprom_status == EEPROM_OK)
@@ -107,7 +107,7 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 void eeprom_dump_out(void)
 {
 	char message[80] = {0};
-	uint8_t data[8] = {0};
+	int8_t data[8] = {0};
 	for(int i = 0; i < EEPROM_SIZE; i += 8)
 	{
 		uint16_t addr = EEPROM_START_ADDR + i;
@@ -116,7 +116,7 @@ void eeprom_dump_out(void)
 		for(int j = 0; j < 16; ++j)
 			read(addr + j, &(data[j]));
 
-		uint16_t str_len = make_hex_string(message, addr, data, len);
+		uint16_t str_len = make_hex_string(message, addr, (uint8_t* )data, len);
 
 		message_out(message, str_len);
 	}
