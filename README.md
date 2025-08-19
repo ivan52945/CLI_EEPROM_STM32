@@ -16,14 +16,13 @@ Supported comands:
 | 9 | Format of value(DEC)    | 55      |
   
 Command examples:
-| # | Description       | Value                 	|
-|:-:|:------------------|:--------------------------|
-| 1 | Write cell        | eeprom -w -a 10 -v 55 	|
-| 2 | Write cell        | eeprom -w -a 10 -v --55 	|
-| 3 | Read cell         | eeprom -r -a 10       	|
-| 4 | Clear cell        | eeprom -e -a 10       	|
-| 5 | Erase cell        | eeprom -d 				|
+| # | Description       | Value                  |
+|:-:|:------------------|:-----------------------|
+| 1 | Write cell        | eeprom -w -a 10 -v 55  |
+| 2 | Write cell        | eeprom -w -a 10 -v -55 |
+| 3 | Read cell         | eeprom -r -a 10        |
+| 4 | Clear cell        | eeprom -e -a 10        |
+| 5 | Erase cell        | eeprom -d 			 |
 
   
 *The dump is output in Intel HEX format
-*If you want to write negative value to arg, you shood write -- before arg(example: --50)

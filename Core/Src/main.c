@@ -101,15 +101,14 @@ int main(void)
   {
 	if(received_packet)
 	{
+		received_packet = 0;
+
 		char* command = get_filled_rx_buff_ptr();
 		uint16_t len = get_received_length();
 
 		execute_command(command, len);
 
-		//uint16_t len_cmd = get_received_length();
-		//CDC_Transmit_FS((uint8_t*)command, len_cmd);
-
-		received_packet = 0;
+		//CDC_Transmit_FS((uint8_t*)command, len);
 	}
 
     /* USER CODE END WHILE */
