@@ -5,9 +5,10 @@
  *      Author: Nemicus
  */
 
-#include "str_custom.h"
 #include <string.h>
 #include <stdint.h>
+#include "str_custom.h"
+#include <assert.h>
 
 static inline char* place_byte_to_str(uint8_t byte, char* dst)
 {
@@ -33,11 +34,11 @@ static inline char* place_halfw_to_str(uint16_t halfw, char* dst)
 
 uint16_t make_hex_string(char dst[], uint16_t addr_start, const uint8_t data[], uint8_t len)
 {
-	//TODO: rewrite it
+	assert(len <= 16);
 
 	char* ptr = dst;
 	*ptr++ = ':';
-	//TODO: add assert len <= 16
+
 	uint8_t acc = len + (addr_start >> 8) + (addr_start & 0xFF);
 
 	ptr = place_byte_to_str(len, ptr);

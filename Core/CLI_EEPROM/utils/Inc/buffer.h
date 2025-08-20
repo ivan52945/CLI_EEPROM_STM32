@@ -14,7 +14,7 @@
 		const char* msg_out = x; \
 		uint16_t msglen = sizeof(x) - 1; \
 		message_out(msg_out, msglen); \
-	} while(0);
+	} while(0)
 
 char* set_next_rx_buff_ptr(void);
 
