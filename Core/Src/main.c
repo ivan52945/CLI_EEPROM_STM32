@@ -101,10 +101,10 @@ int main(void)
   {
 	if(received_packet)
 	{
+		received_packet = 0;
+
 		char* command = get_filled_rx_buff_ptr();
 		uint16_t len = get_received_length();
-
-		received_packet = 0;
 
 		execute_command(command, len);
 
