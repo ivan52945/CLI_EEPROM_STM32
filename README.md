@@ -25,5 +25,5 @@ Command examples:
 | 5 | Erase cell        | eeprom -d 				|
 
   
-*The dump is output in Intel HEX format
+*The dump is output in Intel HEX format  
 *If you want to write negative value to arg, you shood write -- before arg(example: --50)

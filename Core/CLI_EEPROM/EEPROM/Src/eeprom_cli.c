@@ -236,7 +236,7 @@ static uint8_t eeprom_check_cmd(command_status_t* command)
 		__msg_out("Error: Dump command don't expect value or address\n");
 		return 1;
 	}
-	if((command->command_flags & ADDR_FLAG) && ((command->address < EEPROM_START_ADDR) || (command->address > (EEPROM_START_ADDR + EEPROM_SIZE - 1))))
+	if((command->value_flags & ADDR_FLAG) && ((command->address < EEPROM_START_ADDR) || (command->address > (EEPROM_START_ADDR + EEPROM_SIZE - 1))))
 	{
 		__msg_out("Error: addres should be betwen 0 and 63\n");
 		return 1;
