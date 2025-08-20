@@ -51,7 +51,7 @@ static uint8_t eeprom_check_cmd(command_status_t* command);
  * -w 			-- write															\n
  * -e 			-- errace															\n
  * -d 			-- dump																\n
- * -a <addr> 	-- address															\n
+ * -a <address> -- address															\n
  * -v <value>	-- value															\n
  *
  * @param [in] argc Count of arguments and values

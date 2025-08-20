@@ -103,25 +103,6 @@ char* strtok_custom_spaces(char* src)
 	else
 		return 0;
 }
-// BAD IDEA
-int strcmp_custom(const char* s1, const char* s2)
-{
-	while ( *s1 && *s1 == *s2 )
-	{
-		++s1;
-		++s2;
-	}
-	return (*s1 - *s2);
-}
-// BAD IDEA
-char* strchr_custom(char* str, int chr)
-{
-	char* ptr = str;
-
-	while(*ptr && *ptr != chr) { ++ptr; }
-
-	return (*ptr == chr) ? ptr : 0;
-}
 
 /*
  * @brief convert string to integer
