@@ -42,6 +42,24 @@ typedef struct
 static void eeprom_parse_cmd(uint8_t argc, char* argv[], command_status_t* command);
 static uint8_t eeprom_check_cmd(command_status_t* command);
 
+/*
+ * @brief Parse args, check correction and execute command
+ *
+ * Function work with standart list of arguments and values and execute command.	\n
+ * Supported arguments:																\n
+ * -r 			-- read																\n
+ * -w 			-- write															\n
+ * -e 			-- errace															\n
+ * -d 			-- dump																\n
+ * -a <address> -- address															\n
+ * -v <value>	-- value															\n
+ *
+ * @param [in] argc Count of arguments and values
+ * @param [in] argv Array of pointers to start of argument and value strings
+ *
+ * @warning Strings in argv must be correct
+ * @note Send message with result of execution
+ */
 void eeprom_execute_cmd(uint8_t argc, char* argv[])
 {
 	command_status_t command = {0};

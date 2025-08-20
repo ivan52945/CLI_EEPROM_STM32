@@ -14,6 +14,15 @@
 
 #define MAX_ARGS_N 10
 
+/*
+ * brief Executes the command with the corresponding prefix. Send message command is unrecognised
+ *
+ * @param [in] command String with command
+ * @param [in] len Length of command string
+ *
+ * @note Command_table.c contain a table with prefixes and commands
+ * @note Function send echo
+ */
 void execute_command(char command[], uint16_t len)
 {
 
