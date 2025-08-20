@@ -12,10 +12,10 @@
 #include <stdint.h>
 #include <string.h>
 
-static char rx_buffer[2][200] = {0};
+static volatile char rx_buffer[2][200] = {0};
 
-static uint16_t rx_len = 0;
-static uint8_t rx_ready_buff_id = 0;
+static volatile uint16_t rx_len = 0;
+static volatile uint8_t rx_ready_buff_id = 0;
 
 
 char* set_next_rx_buff_ptr(void)

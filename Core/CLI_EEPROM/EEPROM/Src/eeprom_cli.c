@@ -51,8 +51,6 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 	if(eeprom_check_cmd(&command))
 		return;
 
-	char message[10] = "\n";
-
 	switch(command.command_flags)
 	{
 		case READ_FLAG:
@@ -63,10 +61,11 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 
 			if(eeprom_status == EEPROM_OK)
 			{
+				char message[10] = "\n";
 				itoa(eeprom_value, message, 10);
 				uint8_t	len = strlen(message);
-				message[++len] = '\n';
-				message[len] = '\0';
+				message[len] = '\n';
+				message[++len] = '\0';
 				message_out(message, len);
 			}
 			else

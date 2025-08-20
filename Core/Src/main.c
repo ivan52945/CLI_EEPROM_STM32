@@ -47,7 +47,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t received_packet = 0;
+volatile uint8_t received_packet = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
