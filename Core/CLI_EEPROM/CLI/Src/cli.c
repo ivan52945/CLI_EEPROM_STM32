@@ -14,9 +14,17 @@
 
 #define MAX_ARGS_N 10
 
+/*
+ * brief Executes the command with the corresponding prefix. Send message command is unrecognised
+ *
+ * @param [in] command String with command
+ * @param [in] len Length of command string
+ *
+ * @note Command_table.c contain a table with prefixes and commands
+ * @note Function send echo
+ */
 void execute_command(char command[], uint16_t len)
 {
-
 	uint8_t argc = 0;
 	char* argv[MAX_ARGS_N] = { 0 };
 
@@ -34,7 +42,6 @@ void execute_command(char command[], uint16_t len)
 			continue;
 
 		for(;(argv[argc] = strtok_custom_spaces(0)) != 0 && argc < MAX_ARGS_N; ++argc) {}
-
 
 		command_table[i].command(argc, argv);
 

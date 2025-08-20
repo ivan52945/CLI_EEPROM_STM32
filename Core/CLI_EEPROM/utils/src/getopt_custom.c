@@ -12,6 +12,21 @@ char* optarg_custom = 0;
 int optarg_stat_custom = 0;
 int optind_custom = 1;
 
+/*
+ * @brief return argument symbol from arguments array every. After all arguments return -1
+ *
+ * @param [in] argc Count of args and values
+ * @param [in] argv Array of pointers to arg and value strings
+ * @param [in] string with arg symbols (if arg must have value, after argument symbol must be symbol ':')
+ * @return argument symbol or 'if' unrecognised
+ *
+ * @note optarg contain pointer to value of argument
+ * @note after getting of all arguments you should install optind_custom to 1
+ * @note if there is if there was an error in recognizing the value, optarg_stat_custom is set to 1
+ * @note if you want to get negative value you should write 2 minuses in value (--100)
+ *
+ * @warning argv must contain pointers to correct strings
+ */
 int getopt_custom(int argc, char** argv, char commands[])
 {
 	if(optind_custom >= argc)

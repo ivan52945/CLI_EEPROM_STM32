@@ -41,6 +41,24 @@ static void eeprom_parse_cmd(uint8_t argc, char* argv[], command_status_t* comma
 
 static uint8_t eeprom_check_cmd(command_status_t* command);
 
+
+/*
+ * @brief Parse args, check correction and execute command
+ *
+ * Function work with standart list of arguments and values and execute command.	\n
+ * Supported arguments:																\n
+ * -r 			-- read																\n
+ * -w 			-- write															\n
+ * -e 			-- errace															\n
+ * -d 			-- dump																\n
+ * -a <addr> 	-- address															\n
+ * -v <value>	-- value															\n
+ *
+ * @param [in] argc Count of arguments and values
+ * @param [in] argv Array of pointers to start of argument and value strings
+ *
+ * @warning strings in argv must be correct
+ */
 void eeprom_execute_cmd(uint8_t argc, char* argv[])
 {
 	command_status_t command = {0};
@@ -104,6 +122,9 @@ void eeprom_execute_cmd(uint8_t argc, char* argv[])
 	}
 }
 
+/*
+ * @brief Print dump of EEPROM in Intel HEX format. Every string contain 8 bytes
+ */
 void eeprom_dump_out(void)
 {
 	char message[80] = {0};
