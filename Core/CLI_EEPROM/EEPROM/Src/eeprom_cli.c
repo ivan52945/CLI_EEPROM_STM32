@@ -171,55 +171,54 @@ static void eeprom_parse_cmd(uint8_t argc, char* argv[], command_status_t* comma
 static uint8_t eeprom_check_cmd(command_status_t* command)
 {
 	switch(command->value_err_flags)
-		{
-			case ADDR_FLAG:
-				__msg_out("Error: unrecognised or missing address\n");
-				return 1;
-			case VALUE_FLAG:
-				__msg_out("Error: unrecognised or missing value\n");
-				return 1;
-			case ADDR_FLAG | VALUE_FLAG:
-				__msg_out("Error: unrecognised or missing addr and value\n");
-				return 1;
-			default:
-		}
+	{
+		case ADDR_FLAG:
+			__msg_out("Error: unrecognised or missing address\n");
+			return 1;
+		case VALUE_FLAG:
+			__msg_out("Error: unrecognised or missing value\n");
+			return 1;
+		case ADDR_FLAG | VALUE_FLAG:
+			__msg_out("Error: unrecognised or missing addr and value\n");
+			return 1;
+		default:
+	}
 
+	if(!(command->command_flags))
+	{
+		__msg_out("Error: command expected\n");
+		return 1;
+	}
+	if((command->command_flags) & ((command->command_flags) - 1))
+	{
+		__msg_out("Error: allowed to use only one command flag\n");
+		return 1;
+	}
 
-
-		if(!(command->command_flags))
-		{
-			__msg_out("Error: command expected\n");
-			return 1;
-		}
-		if((command->command_flags) & ((command->command_flags) - 1))
-		{
-			__msg_out("Error: allowed to use only one command flag\n");
-			return 1;
-		}
-		if((command->command_flags == READ_FLAG) && (command->value_flags != ADDR_FLAG))
-		{
-			__msg_out("Error: read command expect address and don't expect value\n");
-			return 1;
-		}
-		if((command->command_flags == WRITE_FLAG) && (command->value_flags != (VALUE_FLAG | ADDR_FLAG)))
-		{
-			__msg_out("Error: write command expect address and value\n");
-			return 1;
-		}
-		if((command->command_flags == ERACE_FLAG) && (command->value_flags != ADDR_FLAG))
-		{
-			__msg_out("Error: erace command expect address and don't expect value\n");
-			return 1;
-		}
-		if((command->command_flags == DUMP_FLAG) && (command->value_flags != NO_VALUES))
-		{
-			__msg_out("Error: Dump command don't expect value or address\n");
-			return 1;
-		}
-		if((command->value_flags & ADDR_FLAG) && ((command->address < EEPROM_START_ADDR) || (command->address > (EEPROM_START_ADDR + EEPROM_SIZE - 1))))
-		{
-			__msg_out("Error: addres should be betwen 0 and 63\n");
-			return 1;
-		}
-		return 0;
+	if((command->command_flags == READ_FLAG) && (command->value_flags != ADDR_FLAG))
+	{
+		__msg_out("Error: read command expect address and don't expect value\n");
+		return 1;
+	}
+	if((command->command_flags == WRITE_FLAG) && (command->value_flags != (VALUE_FLAG | ADDR_FLAG)))
+	{
+		__msg_out("Error: write command expect address and value\n");
+		return 1;
+	}
+	if((command->command_flags == ERACE_FLAG) && (command->value_flags != ADDR_FLAG))
+	{
+		__msg_out("Error: erace command expect address and don't expect value\n");
+		return 1;
+	}
+	if((command->command_flags == DUMP_FLAG) && (command->value_flags != NO_VALUES))
+	{
+		__msg_out("Error: Dump command don't expect value or address\n");
+		return 1;
+	}
+	if((command->command_flags & ADDR_FLAG) && ((command->address < EEPROM_START_ADDR) || (command->address > (EEPROM_START_ADDR + EEPROM_SIZE - 1))))
+	{
+		__msg_out("Error: addres should be betwen 0 and 63\n");
+		return 1;
+	}
+	return 0;
 }

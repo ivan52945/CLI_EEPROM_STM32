@@ -47,7 +47,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t received_packet = 0;
+volatile uint8_t received_packet = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,12 +104,11 @@ int main(void)
 		char* command = get_filled_rx_buff_ptr();
 		uint16_t len = get_received_length();
 
+		received_packet = 0;
+
 		execute_command(command, len);
 
-		//uint16_t len_cmd = get_received_length();
-		//CDC_Transmit_FS((uint8_t*)command, len_cmd);
-
-		received_packet = 0;
+		//CDC_Transmit_FS((uint8_t*)command, len);
 	}
 
     /* USER CODE END WHILE */
