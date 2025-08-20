@@ -12,6 +12,12 @@ int optind_custom = 1;
 char* optarg_custom = 0;
 int opteror_custom = 0;
 
+
+/*
+ * @brief Analog of getopt without supporting of "::" combination
+ *
+ * @see @ref getopt
+ */
 int getopt_custom(int argc, char** argv, char commands[])
 {
 	if(optind_custom >= argc)

@@ -10,6 +10,7 @@
 #include "str_custom.h"
 #include <assert.h>
 
+
 static inline char* place_byte_to_str(uint8_t byte, char* dst)
 {
 	uint8_t byte_low = (byte & 0xF);
@@ -20,6 +21,7 @@ static inline char* place_byte_to_str(uint8_t byte, char* dst)
 
     return dst;
 }
+
 
 static inline char* place_halfw_to_str(uint16_t halfw, char* dst)
 {
@@ -32,6 +34,17 @@ static inline char* place_halfw_to_str(uint16_t halfw, char* dst)
     return dst;
 }
 
+/*
+ * @brief make hex string from data array and start address
+ *
+ * @param [in] dst Empty string
+ * @param [in] addr_start Start address
+ * @param [in] data Array of bytes from which the string will be made
+ * @param [in] len Count of bytes
+ *
+ * @warning addr must be less than (0xFFFF - len)
+ * @warning len must be less or equal 16
+ */
 uint16_t make_hex_string(char dst[], uint16_t addr_start, const uint8_t data[], uint8_t len)
 {
 	assert(len <= 16);
@@ -61,6 +74,14 @@ uint16_t make_hex_string(char dst[], uint16_t addr_start, const uint8_t data[], 
 	return ptr - dst;
 }
 
+/*
+ * @brief divide string to words. Get new string after every call
+ *
+ * @param [in] src Divisible string or NULL, if you continue to divide
+ * @return pointer to next word or NULL if there no words in string
+ *
+ * @warning String must be correct
+ */
 char* strtok_custom_spaces(char* src)
 {
 	static char* ptr = 0;
@@ -83,26 +104,17 @@ char* strtok_custom_spaces(char* src)
 	else
 		return 0;
 }
-// BAD IDEA
-int strcmp_custom(const char* s1, const char* s2)
-{
-	while ( *s1 && *s1 == *s2 )
-	{
-		++s1;
-		++s2;
-	}
-	return (*s1 - *s2);
-}
-// BAD IDEA
-char* strchr_custom(char* str, int chr)
-{
-	char* ptr = str;
 
-	while(*ptr && *ptr != chr) { ++ptr; }
-
-	return (*ptr == chr) ? ptr : 0;
-}
-
+/*
+ * @brief convert string to integer
+ *
+ * @param [in] start Pointer to string
+ * @param [out] end Pointer to end of string or first unrecognised char
+ * @param [in] base Base of the number system
+ * @return converted value or zero if unrecognisable string
+ *
+ * @warning String must be correct
+ */
 int strtol_custom(char* start, char **end, uint8_t base)
 {
 	int result = 0;
@@ -150,6 +162,15 @@ int strtol_custom(char* start, char **end, uint8_t base)
 	return (minus) ? result : -result;
 }
 
+/*
+ * @brief convert string to decimal based integer
+ *
+ * @param [in] start Pointer to string
+ * @param [out] end Pointer to end of string or first unrecognised char
+ * @return converted value or zero if unrecognisable string
+ *
+ * @warning String must be correct
+ */
 int strtol10_custom(char* start, char **end)
 {
 	int result = 0;
@@ -180,25 +201,18 @@ int strtol10_custom(char* start, char **end)
 	return (minus) ? result : -result;
 }
 
+/*
+ * @brief convert string to integer
+ *
+ * @param [in] start Pointer to string
+ * @param [out] status Status of conversion (0 if ok)
+ * @param [in] base Base of the number system
+ * @return converted value or zero if unrecognisable string
+ *
+ * @warning String must be correct
+ */
 int atoi_custom(char* start, uint8_t *status, uint8_t base)
 {
-	/*
-	// prewious variant
-	char* end = NULL;
-
-	uint8_t len = strlen(optarg_custom);
-	int value = strtol_custom(optarg_custom, &end, base);
-
-	if(status != 0)
-	{
-		if((end - start) < len)
-			*status = 1;
-		else
-			*status = 0;
-	}
-
-	return value;
-	*/
 	int result = 0;
 	uint8_t digit = 0;
 	uint8_t minus = 0;
@@ -243,25 +257,17 @@ int atoi_custom(char* start, uint8_t *status, uint8_t base)
 	return (minus) ? result : -result;
 }
 
+/*
+ * @brief convert string to integer
+ *
+ * @param [in] start Pointer to string
+ * @param [out] status Status of conversion (0 if ok)
+ * @return converted value or zero if unrecognisable string
+ *
+ * @warning String must be correct
+ */
 int atoi10_custom(char* start, uint8_t *status)
 {
-	/*
-	// prewios variant
-	char* end = NULL;
-
-	uint8_t len = strlen(optarg_custom);
-	int value = strtol10_custom(optarg_custom, &end);
-
-	if(status != 0)
-	{
-		if((end - start) < len)
-			*status = 1;
-		else
-			*status = 0;
-	}
-
-	return value;
-	*/
 	int result = 0;
 	uint8_t digit = 0;
 	uint8_t minus = 0;
