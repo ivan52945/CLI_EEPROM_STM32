@@ -5,11 +5,10 @@
  *      Author: Nemicus
  */
 
+#include <assert.h>
+#include "str_custom.h"
 #include <string.h>
 #include <stdint.h>
-#include "str_custom.h"
-#include <assert.h>
-
 
 static inline char* place_byte_to_str(uint8_t byte, char* dst)
 {
@@ -21,7 +20,6 @@ static inline char* place_byte_to_str(uint8_t byte, char* dst)
 
     return dst;
 }
-
 
 static inline char* place_halfw_to_str(uint16_t halfw, char* dst)
 {
@@ -74,6 +72,7 @@ uint16_t make_hex_string(char dst[], uint16_t addr_start, const uint8_t data[], 
 	return ptr - dst;
 }
 
+
 /*
  * @brief divide string to words. Get new string after every call
  *
@@ -106,7 +105,7 @@ char* strtok_custom_spaces(char* src)
 }
 
 /*
- * @brief convert string to integer
+ * @brief convert stringified number to integer
  *
  * @param [in] start Pointer to string
  * @param [out] end Pointer to end of string or first unrecognised char
@@ -159,11 +158,11 @@ int strtol_custom(char* start, char **end, uint8_t base)
 		}
 	}
 
-	return (minus) ? result : -result;
+	return (minus) ? -result : result;
 }
 
 /*
- * @brief convert string to decimal based integer
+ * @brief convert stringified number to decimal based integer
  *
  * @param [in] start Pointer to string
  * @param [out] end Pointer to end of string or first unrecognised char
@@ -198,11 +197,11 @@ int strtol10_custom(char* start, char **end)
 			return 0;
 		}
 	}
-	return (minus) ? result : -result;
+	return (minus) ? -result : result;
 }
 
 /*
- * @brief convert string to integer
+ * @brief convert stringified number to decimal based integer
  *
  * @param [in] start Pointer to string
  * @param [out] status Status of conversion (0 if ok)
@@ -213,52 +212,17 @@ int strtol10_custom(char* start, char **end)
  */
 int atoi_custom(char* start, uint8_t *status, uint8_t base)
 {
-	int result = 0;
-	uint8_t digit = 0;
-	uint8_t minus = 0;
+	char* end = NULL;
 
-	if(*start == '-')
-	{
-		++start;
-		minus = 1;
-	}
+	int result = strtol_custom(start, &end, base);
 
-	while(*start)
-	{
-		if(*start >= '0')
-		{
-			digit =  *start - '0';
-		}
-		else if(*start >= 'A')
-		{
-			digit =  *start - 'A' + 10;
-		}
-		else if(*start >= 'a')
-		{
-			digit =  *start - 'a' + 10;
-		}
-		else
-		{
-			digit = 255;
-		}
+	*status = (*end == '\0') ? 0 : 1;
 
-		if(digit >= 0 && digit < base)
-		{
-			result = (result * 10) + digit;
-			++start;
-		}
-		else
-		{
-			*status = 1;
-			return 0;
-		}
-	}
-	*status = 0;
-	return (minus) ? result : -result;
+	return result;
 }
 
 /*
- * @brief convert string to integer
+ * @brief convert stringified number to integer
  *
  * @param [in] start Pointer to string
  * @param [out] status Status of conversion (0 if ok)
@@ -268,32 +232,13 @@ int atoi_custom(char* start, uint8_t *status, uint8_t base)
  */
 int atoi10_custom(char* start, uint8_t *status)
 {
-	int result = 0;
-	uint8_t digit = 0;
-	uint8_t minus = 0;
+	char* end = NULL;
 
-	if(*start == '-')
-	{
-		++start;
-		minus = 1;
-	}
+	int result = strtol10_custom(start, &end);
 
-	while(*start)
-	{
-		if(*start >= '0' && *start <= '9')
-		{
-			digit =  *start - '0';
-			result = (result * 10) + digit;
-			++start;
-		}
-		else
-		{
-			*status = 1;
-			return 0;
-		}
-	}
-	*status = 0;
-	return (minus) ? -result : result;
+	*status = (*end == '\0') ? 0 : 1;
+
+	return result;
 }
 /*
 int sprintf_custom(char dst[], char *format, ...)
